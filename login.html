@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cattle Monitor - System Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.login-page {
+            align-items: center;
+        }
+
+        .theme-btn-login {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .theme-btn-login:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            z-index: 1; /* Keep above background */
+        }
+
+        .login-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-logo {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .login-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .form-group:nth-child(2) { animation-delay: 0.1s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            background-color: rgba(0,0,0,0.2);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        :root[data-theme="light"] input[type="text"],
+        :root[data-theme="light"] input[type="password"],
+        :root[data-theme="light"] select {
+            background-color: rgba(0,0,0,0.05);
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background-color: rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .login-btn,
+        .demo-btn {
+            flex: 1;
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            color: #fff;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .demo-btn {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .demo-btn:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent-blue);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            animation: shake 0.5s ease;
+            display: none;
+        }
+
+        .error-message.show { display: block; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .success-message {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            animation: slideInDown 0.5s ease;
+            display: none;
+        }
+
+        .success-message.show { display: block; }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .login-box { padding: 2rem 1.5rem; }
+            .login-title { font-size: 1.5rem; }
+            .form-actions { flex-direction: column; }
+            .login-logo { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body class="login-page">
+    <button class="theme-btn-login" id="themeIcon" onclick="toggleTheme()" title="Toggle Theme"></button>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="login-logo">🐄</div>
+                <h1 class="login-title">Farm Monitor</h1>
+                <p class="login-subtitle">Dairy Farm Management System</p>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="userType">User Type</label>
+                    <select id="userType" name="userType" required>
+                        <option value="">Select User Type</option>
+                        <option value="admin">Administrator</option>
+                        <option value="farmer">Farmer</option>
+                        <option value="veterinarian">Veterinarian</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username or Email</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Enter your username" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password" 
+                        required
+                    >
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe" style="margin: 0;">Remember me</label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="login-btn">Login</button>
+                    <button type="button" class="demo-btn" onclick="loginAsDemo()">Demo</button>
+                </div>
+            </form>
+
+            <div class="login-footer">
+                <p>Demo Credentials:</p>
+                <p>Admin | username: admin | password: admin123</p>
+                <p>Farmer | username: farmer | password: farmer123</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if already logged in
+        window.addEventListener('load', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userType = localStorage.getItem('userType');
+            if (isLoggedIn === 'true') {
+                if (userType === 'admin') window.location.href = 'admin.html';
+                else if (userType === 'veterinarian') window.location.href = 'vet.html';
+                else window.location.href = 'farmer.html';
+            }
+        });
+
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const userType = document.getElementById('userType').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+
+            // Clear previous messages
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+
+            // Demo credentials
+            const validCredentials = {
+                admin: { username: 'admin', password: 'admin123' },
+                farmer: { username: 'farmer', password: 'farmer123' },
+                veterinarian: { username: 'vet', password: 'vet123' }
+            };
+
+            const credentials = validCredentials[userType];
+
+            if (!credentials) {
+                errorMsg.textContent = '❌ Please select a valid user type';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            if (username === credentials.username && password === credentials.password) {
+                successMsg.textContent = '✓ Login successful! Redirecting...';
+                successMsg.classList.add('show');
+
+                // Save login info
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userType', userType);
+                localStorage.setItem('username', username);
+                
+                if (rememberMe) {
+                    localStorage.setItem('rememberCredentials', 'true');
+                    localStorage.setItem('savedUsername', username);
+                }
+
+                // Redirect based on user type
+                setTimeout(() => {
+                    if (userType === 'admin') window.location.href = 'admin.html';
+                    else if (userType === 'veterinarian') window.location.href = 'vet.html';
+                    else window.location.href = 'farmer.html';
+                }, 1000);
+            } else {
+                errorMsg.textContent = '❌ Invalid username or password';
+                errorMsg.classList.add('show');
+            }
+        }
+
+        function loginAsDemo() {
+            const userType = document.getElementById('userType').value;
+
+            if (!userType) {
+                const errorMsg = document.getElementById('errorMessage');
+                errorMsg.textContent = '❌ Please select a user type first';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            // Auto-fill demo credentials based on selected user type
+            const demoCredentials = {
+                admin: { username: 'admin', password: 'admin123' },
+                farmer: { username: 'farmer', password: 'farmer123' },
+                veterinarian: { username: 'vet', password: 'vet123' }
+            };
+
+            const credentials = demoCredentials[userType];
+            document.getElementById('username').value = credentials.username;
+            document.getElementById('password').value = credentials.password;
+
+            // Auto-submit
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        }
+
+        // Restore saved username if remember me was checked
+        window.addEventListener('load', () => {
+            const rememberCredentials = localStorage.getItem('rememberCredentials');
+            if (rememberCredentials === 'true') {
+                const savedUsername = localStorage.getItem('savedUsername');
+                if (savedUsername) {
+                    document.getElementById('username').value = savedUsername;
+                    document.getElementById('rememberMe').checked = true;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

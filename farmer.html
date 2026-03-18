@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cattle Monitor | Real-Time Dashboard</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="glass-header">
+            <div class="logo">
+                <div class="emoji-logo">🐄</div>
+                <h1>Farmer<span>Dashboard</span></h1>
+            </div>
+            <div style="display:flex; gap:1.5rem; align-items:center;">
+                <div class="status-indicator" id="connStatus">
+                    <span class="pulsing-dot warning"></span>
+                    Connecting...
+                </div>
+                <button class="theme-btn" id="themeIcon" onclick="toggleTheme()" title="Toggle Theme"></button>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <main class="grid-2-cols">
+            <!-- Admin Instructions Checklist -->
+            <div class="card glass-card span-2-cols" id="instructionsCard">
+                <div class="card-header">
+                    <div class="icon-bg activity" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
+                    </div>
+                    <h3>Messages & Instructions from Admin</h3>
+                </div>
+                <div id="instructionsList" class="checklist-container">
+                    <!-- Checkboxes injected here -->
+                </div>
+            </div>
+
+            <!-- Water Level -->
+            <div class="card glass-card">
+                <div class="card-header">
+                    <div class="icon-bg activity" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                    </div>
+                    <h3>Water Level</h3>
+                </div>
+                <div class="value-container">
+                    <span id="waterVal" class="big-value">--</span>
+                    <span class="unit">%</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="waterFill" style="width: 0%; background: linear-gradient(90deg, #10b981, #38bdf8);"></div></div>
+            </div>
+
+            <!-- Food Level -->
+            <div class="card glass-card">
+                <div class="card-header">
+                    <div class="icon-bg temp" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="M7 10h10"></path><path d="M12 10v6"></path></svg>
+                    </div>
+                    <h3>Food Level</h3>
+                </div>
+                <div class="value-container">
+                    <span id="foodVal" class="big-value">--</span>
+                    <span class="unit">kg</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="foodFill" style="width: 0%; background: linear-gradient(90deg, #ef4444, #8b5cf6);"></div></div>
+            </div>
+
+            <!-- GPS Details -->
+            <div class="card glass-card span-2-cols map-card">
+                <div class="map-container" id="map"></div>
+                <div class="location-footer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span id="locVal">Waiting for GPS Fix...</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Firebase App JS Module -->
+    <script type="module" src="farmer.js"></script>
+</body>
+</html>
